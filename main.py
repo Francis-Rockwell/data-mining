@@ -1,7 +1,6 @@
 import argparse
 import pandas as pd
 from data.pre_process import Dataset
-from models.model import Model
 from models import logistic_regression, support_vector_machine, neural_network
 
 
@@ -51,4 +50,4 @@ if __name__ == "__main__":
             "id": dataset.test_id,
             "isDefault": model.predict(dataset.test_feature),
         }
-    ).to_csv(f"{prefix}_submission.csv")
+    ).to_csv(f"{prefix}_submission.csv", index=False)
