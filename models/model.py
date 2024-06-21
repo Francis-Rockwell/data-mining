@@ -1,21 +1,21 @@
 from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import train_test_split
 
 
 class Model:
-    def __init__(self, feature, label, split=0.8):
-        self.split = split
-        self.train_num = int(len(feature) * split)
-        self.evaluate_num = len(feature) - self.train_num
-        self.train_feature = feature[: self.train_num]
-        self.train_label = label[: self.train_num]
-        self.evaluate_feature = feature[self.train_num :]
-        self.evaluate_label = label[self.train_num :]
+    def __init__(self, feature, label, split=0.2):
+        (
+            self.train_feature,
+            self.evaluate_feature,
+            self.train_label,
+            self.evaluate_label,
+        ) = train_test_split(feature, label, test_size=split, random_state=42)
 
     def train(self):
-        pass
+        raise NotImplementedError
 
     def predict(self, feature):
-        pass
+        raise NotImplementedError
 
-    def evaluate(self):
+    def validate(self):
         return roc_auc_score(self.evaluate_label, self.predict(self.evaluate_feature))
