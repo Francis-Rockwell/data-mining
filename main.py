@@ -4,13 +4,13 @@ from models.model import Model
 from models import logic_regression, support_vector_machine, neural_network
 
 if __name__ == "__main__":
-    train_data_public = pd.read_csv("train_public.csv")
-    train_data_internet = pd.read_csv("train_internet.csv")
-    test_data_public = pd.read_csv("test_public.csv")
+    train_data_public = pd.read_csv("data/train_public.csv")
+    train_data_internet = pd.read_csv("data/train_internet.csv")
+    test_data_public = pd.read_csv("data/test_public.csv")
 
     dataset = Dataset(
         train_data_public=train_data_public,
-        train_data_public=train_data_internet,
+        train_data_internet=train_data_internet,
         test_data_public=test_data_public,
     )
 
