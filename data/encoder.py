@@ -35,7 +35,12 @@ class IssueDateEncoder(BaseEstimator, TransformerMixin):
 
         def mapping(issuedate):
             issuedate: str = issuedate[0]
-            year, month, _ = issuedate.split("/")
+            if "/" in issuedate:
+                year, month, _ = issuedate.split("/")
+            elif "-" in issuedate:
+                year, month, _ = issuedate.split("-")
+            else:
+                raise NotImplementedError
             return [int(year), int(month)]
 
         self.mapping = mapping

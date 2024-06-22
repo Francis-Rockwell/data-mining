@@ -13,16 +13,19 @@ if __name__ == "__main__":
         required=True,
         choices=["LR", "XGB", "NN", "RF"],
     )
+    parser.add_argument("-I", "--internet", type=bool, default=False, required=False)
     args = parser.parse_args()
 
     train_data_public = pd.read_csv("data/train_public.csv")
-    train_data_internet = pd.read_csv("data/train_internet.csv")
+    train_data_internet = (
+        pd.read_csv("data/train_internet.csv") if args.internet else None
+    )
     test_data_public = pd.read_csv("data/test_public.csv")
 
     dataset = Dataset(
         train_data_public=train_data_public,
         train_data_internet=train_data_internet,
-        test_data_public=test_data_public,
+        test_data=test_data_public,
     )
 
     dataset.preprocess()
