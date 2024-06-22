@@ -1,7 +1,7 @@
 import argparse
 import pandas as pd
 from data.pre_process import Dataset
-from models import xgboost, logistic_regression, neural_network
+from models import xgboost, logistic_regression, neural_network, random_forest
 
 
 if __name__ == "__main__":
@@ -11,7 +11,7 @@ if __name__ == "__main__":
         "--model_type",
         type=str,
         required=True,
-        choices=["LR", "XGB", "NN"],
+        choices=["LR", "XGB", "NN", "RF"],
     )
     args = parser.parse_args()
 
@@ -38,10 +38,15 @@ if __name__ == "__main__":
         )
         prefix = "xgboost"
     elif args.model_type == "NN":
-        model = neuralNetwork = neural_network.NeuralNetwork(
+        model = neural_network.NeuralNetwork(
             feature=dataset.train_feature, label=dataset.train_label
         )
         prefix = "neural_network"
+    elif args.model_type == "RF":
+        model = random_forest.RandomForest(
+            feature=dataset.train_feature, label=dataset.train_label
+        )
+        prefix = "random_forest"
 
     model.train()
     print(f"{prefix} validation roc: {model.validate()}")
