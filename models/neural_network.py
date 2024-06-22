@@ -33,7 +33,7 @@ class NeuralNetwork(Model):
         )
         self.criterion = torch.nn.BCELoss()
         self.optimizer = optim.Adam(self.model.parameters(), lr=0.001)
-        self.path = "best_model.pth"
+        self.path = "models/neural_networks/MLP.pth"
 
     def train(self):
         max_epoches = 1000

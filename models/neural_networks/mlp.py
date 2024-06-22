@@ -10,7 +10,7 @@ class MLP(nn.Module):
 
         self.fc1 = nn.Linear(self.input_size, self.hidden_size[0])
         self.relu1 = nn.ReLU()
-        self.fc2 = nn.Linear(self.hidden_size[0], self.output_size)
+        # self.fc2 = nn.Linear(self.hidden_size[0], self.output_size)
         self.fc2 = nn.Linear(self.hidden_size[0], self.hidden_size[1])
         self.relu2 = nn.ReLU()
         self.fc3 = nn.Linear(self.hidden_size[1], self.output_size)

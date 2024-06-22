@@ -50,4 +50,4 @@ if __name__ == "__main__":
             "id": dataset.test_id,
             "isDefault": model.predict(dataset.test_feature),
         }
-    ).to_csv(f"{prefix}_submission.csv", index=False)
+    ).to_csv(f"results/{prefix}_submission.csv", index=False)
