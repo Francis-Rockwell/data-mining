@@ -1,7 +1,7 @@
 import argparse
 import pandas as pd
 from data.pre_process import Dataset
-from models import logistic_regression, support_vector_machine, neural_network
+from models import xgboost, logistic_regression, neural_network
 
 
 if __name__ == "__main__":
@@ -11,7 +11,7 @@ if __name__ == "__main__":
         "--model_type",
         type=str,
         required=True,
-        choices=["LR", "SVM", "NN"],
+        choices=["LR", "XGB", "NN"],
     )
     args = parser.parse_args()
 
@@ -32,11 +32,11 @@ if __name__ == "__main__":
             feature=dataset.train_feature, label=dataset.train_label
         )
         prefix = "logistic_regression"
-    elif args.model_type == "SVM":
-        model = support_vector_machine.SupportVectorMachine(
+    elif args.model_type == "XGB":
+        model = xgboost.XGBoost(
             feature=dataset.train_feature, label=dataset.train_label
         )
-        prefix = "support_vector_machine"
+        prefix = "xgboost"
     elif args.model_type == "NN":
         model = neuralNetwork = neural_network.NeuralNetwork(
             feature=dataset.train_feature, label=dataset.train_label

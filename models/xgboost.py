@@ -1,11 +1,11 @@
 from .model import Model
-import sklearn.svm as svm
+import xgboost as xgb
 
 
-class SupportVectorMachine(Model):
+class XGBoost(Model):
     def __init__(self, feature, label, split=0.2):
         super().__init__(feature, label, split)
-        self.model = svm.SVC(kernel="linear", probability=True)
+        self.model = xgb.XGBClassifier(objective="binary:logistic", random_state=42)
 
     def train(self):
         self.model.fit(self.train_feature, self.train_label)

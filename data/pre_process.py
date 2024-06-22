@@ -1,6 +1,5 @@
 import pandas as pd
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-
+from sklearn.preprocessing import StandardScaler, OrdinalEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
@@ -74,8 +73,10 @@ class Dataset:
             steps=[
                 ("imputer", SimpleImputer(strategy="most_frequent")),
                 (
-                    "onehot",
-                    OneHotEncoder(handle_unknown="ignore"),
+                    "ordinal",
+                    OrdinalEncoder(
+                        handle_unknown="use_encoded_value", unknown_value=-1
+                    ),
                 ),
             ]
         )
