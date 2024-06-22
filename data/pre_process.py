@@ -3,6 +3,7 @@ from sklearn.preprocessing import StandardScaler, OrdinalEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
+from .encoder import WorkYearEncoder, IssueDateEncoder
 
 
 class Dataset:
@@ -48,7 +49,6 @@ class Dataset:
             "class",
             "employer_type",
             "industry",
-            "work_year",
             "house_exist",
             "censor_status",
             "use",
@@ -58,8 +58,10 @@ class Dataset:
             "app_type",
             "earlies_credit_mon",
             "title",
-            "policy_code",
         ]
+
+        self.other_feature = ["work_year", "issue_date"]
+        self.not_feature = ["loan_id", "user_id", "policy_code"]
 
     def preprocess(self):
         numeric_transformer = Pipeline(
@@ -81,10 +83,26 @@ class Dataset:
             ]
         )
 
+        workyear_transformer = Pipeline(
+            steps=[
+                ("imputer", SimpleImputer(strategy="most_frequent")),
+                ("workyear", WorkYearEncoder()),
+            ]
+        )
+
+        issuedate_transformer = Pipeline(
+            steps=[
+                ("imputer", SimpleImputer(strategy="most_frequent")),
+                ("issuedate", IssueDateEncoder()),
+            ]
+        )
+
         preprocessor = ColumnTransformer(
             transformers=[
                 ("numerical", numeric_transformer, self.numerical_features),
                 ("categorical", categorical_transformer, self.categorical_features),
+                ("workyear", workyear_transformer, ["work_year"]),
+                ("issuedate", issuedate_transformer, ["issue_date"]),
             ]
         )
 
