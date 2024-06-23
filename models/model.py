@@ -3,13 +3,11 @@ from sklearn.model_selection import train_test_split
 
 
 class Model:
-    def __init__(self, feature, label, split=0.2):
-        (
-            self.train_feature,
-            self.evaluate_feature,
-            self.train_label,
-            self.evaluate_label,
-        ) = train_test_split(feature, label, test_size=split, random_state=42)
+    def __init__(self, train_feature, train_label, evaluate_feature, evaluate_label):
+        self.train_feature = train_feature
+        self.train_label = train_label
+        self.evaluate_feature = evaluate_feature
+        self.evaluate_label = evaluate_label
 
     def train(self):
         raise NotImplementedError

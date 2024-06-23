@@ -9,8 +9,8 @@ import copy
 
 
 class NeuralNetwork(Model):
-    def __init__(self, feature, label, split=0.2):
-        super().__init__(feature, label, split)
+    def __init__(self, train_feature, train_label, evaluate_feature, evaluate_label):
+        super().__init__(train_feature, train_label, evaluate_feature, evaluate_label)
         self.model = MLP(
             input_size=self.train_feature.shape[1],
             output_size=1,

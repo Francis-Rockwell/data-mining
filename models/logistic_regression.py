@@ -3,8 +3,8 @@ import sklearn.linear_model
 
 
 class LogisticRegression(Model):
-    def __init__(self, feature, label, split=0.2):
-        super().__init__(feature, label, split)
+    def __init__(self, train_feature, train_label, evaluate_feature, evaluate_label):
+        super().__init__(train_feature, train_label, evaluate_feature, evaluate_label)
         self.model = sklearn.linear_model.LogisticRegression(max_iter=5000)
 
     def train(self):

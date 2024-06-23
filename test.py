@@ -1,6 +1,6 @@
 import argparse
 import pandas as pd
-from data.pre_process import Dataset
+from data.pre_process_v2 import Dataset
 from models import xgboost, logistic_regression, neural_network, random_forest
 
 
@@ -13,19 +13,14 @@ if __name__ == "__main__":
         required=True,
         choices=["LR", "XGB", "NN", "RF"],
     )
-    parser.add_argument("-I", "--internet", type=bool, default=False, required=False)
     args = parser.parse_args()
 
     train_data_public = pd.read_csv("data/train_public.csv")
     validation_data_public = pd.read_csv("data/validation_public.csv")
-    train_data_internet = (
-        pd.read_csv("data/select_train_internet.csv") if args.internet else None
-    )
-    test_data_public = pd.read_csv("data/test_public.csv")
+    test_data_public = pd.read_csv("data/train_internet.csv")
 
     dataset = Dataset(
         train_data_public=train_data_public,
-        train_data_internet=train_data_internet,
         validation_data=validation_data_public,
         test_data=test_data_public,
     )
@@ -72,4 +67,4 @@ if __name__ == "__main__":
             "id": dataset.test_id,
             "isDefault": model.predict(dataset.test_feature),
         }
-    ).to_csv(f"results/{prefix}_submission.csv", index=False)
+    ).to_csv(f"shit/{prefix}_submission.csv", index=False)

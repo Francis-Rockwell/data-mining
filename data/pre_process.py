@@ -11,6 +11,7 @@ class Dataset:
         self,
         train_data_public: pd.DataFrame,
         train_data_internet: pd.DataFrame,
+        validation_data: pd.DataFrame,
         test_data: pd.DataFrame,
     ):
         self.train_data_public = train_data_public[
@@ -22,6 +23,7 @@ class Dataset:
             else train_data_internet[train_data_internet["isDefault"].notna()]
         )
         self.test_data = test_data
+        self.validation_data = validation_data
 
         if self.train_data_internet is None:
             self.numerical_feature = [
@@ -176,5 +178,7 @@ class Dataset:
 
         self.train_feature = preprocessor.fit_transform(self.train_data)
         self.train_label = self.train_data["isDefault"]
+        self.validation_feature = preprocessor.transform(self.validation_data)
+        self.validation_label = self.validation_data["isDefault"]
         self.test_id: pd.DataFrame = self.test_data["loan_id"]
         self.test_feature = preprocessor.transform(self.test_data)
