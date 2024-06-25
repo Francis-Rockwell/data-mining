@@ -3,11 +3,13 @@ from sklearn.model_selection import train_test_split
 
 
 class Model:
-    def __init__(self, train_feature, train_label, evaluate_feature, evaluate_label):
+    def __init__(
+        self, train_feature, train_label, validation_feature, validation_label
+    ):
         self.train_feature = train_feature
         self.train_label = train_label
-        self.evaluate_feature = evaluate_feature
-        self.evaluate_label = evaluate_label
+        self.validation_feature = validation_feature
+        self.validation_label = validation_label
 
     def train(self):
         raise NotImplementedError
@@ -16,4 +18,6 @@ class Model:
         raise NotImplementedError
 
     def validate(self):
-        return roc_auc_score(self.evaluate_label, self.predict(self.evaluate_feature))
+        return roc_auc_score(
+            self.validation_label, self.predict(self.validation_feature)
+        )

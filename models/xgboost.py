@@ -3,8 +3,12 @@ import xgboost as xgb
 
 
 class XGBoost(Model):
-    def __init__(self, train_feature, train_label, evaluate_feature, evaluate_label):
-        super().__init__(train_feature, train_label, evaluate_feature, evaluate_label)
+    def __init__(
+        self, train_feature, train_label, validation_feature, validation_label
+    ):
+        super().__init__(
+            train_feature, train_label, validation_feature, validation_label
+        )
         self.model = xgb.XGBClassifier(objective="binary:logistic", random_state=42)
 
     def train(self):

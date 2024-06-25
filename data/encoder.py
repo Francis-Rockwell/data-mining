@@ -1,6 +1,7 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 import numpy as np
 import pandas as pd
+from sklearn.cluster import KMeans
 
 
 class WorkYearEncoder(BaseEstimator, TransformerMixin):
@@ -58,3 +59,17 @@ class IssueDateEncoder(BaseEstimator, TransformerMixin):
                 encoded_value = self.mapping(value)
             encoded_columns.append(encoded_value)
         return np.array(encoded_columns).astype(int)
+
+
+class KmeansEncoder:
+    def __init__(self):
+
+        self.kmeans = KMeans(n_clusters=7, random_state=42, n_init=7)
+
+    def fit(self, X, y=None):
+        self.kmeans.fit(X)
+        return self
+
+    def transform(self, X):
+        X_encoded = np.copy(X)
+        return self.kmeans.predict(X_encoded).reshape(-1, 1).astype(int)

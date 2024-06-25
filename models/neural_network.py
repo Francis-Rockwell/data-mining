@@ -9,8 +9,12 @@ import copy
 
 
 class NeuralNetwork(Model):
-    def __init__(self, train_feature, train_label, evaluate_feature, evaluate_label):
-        super().__init__(train_feature, train_label, evaluate_feature, evaluate_label)
+    def __init__(
+        self, train_feature, train_label, validation_feature, validation_label
+    ):
+        super().__init__(
+            train_feature, train_label, validation_feature, validation_label
+        )
         self.model = MLP(
             input_size=self.train_feature.shape[1],
             output_size=1,
@@ -23,12 +27,12 @@ class NeuralNetwork(Model):
             batch_size=100,
             shuffle=True,
         )
-        self.evaluate_loader = DataLoader(
+        self.validation_loader = DataLoader(
             TensorDataset(
-                torch.Tensor(self.evaluate_feature),
-                torch.Tensor(np.array(self.evaluate_label)),
+                torch.Tensor(self.validation_feature),
+                torch.Tensor(np.array(self.validation_label)),
             ),
-            batch_size=self.evaluate_feature.shape[0],
+            batch_size=self.validation_feature.shape[0],
             shuffle=False,
         )
         self.criterion = torch.nn.BCELoss()
@@ -57,7 +61,7 @@ class NeuralNetwork(Model):
             total_val_loss = 0.0
             total_val_auc = 0.0
             with torch.no_grad():
-                for batch_data, batch_targets in self.evaluate_loader:
+                for batch_data, batch_targets in self.validation_loader:
                     outputs = self.model(batch_data)
                     loss = self.criterion(outputs, batch_targets.unsqueeze(1).float())
                     val_auc = roc_auc_score(
@@ -65,8 +69,8 @@ class NeuralNetwork(Model):
                     )
                     total_val_loss += loss.item()
                     total_val_auc += val_auc
-                avg_val_loss = total_val_loss / len(self.evaluate_loader)
-                avg_val_auc = total_val_auc / len(self.evaluate_loader)
+                avg_val_loss = total_val_loss / len(self.validation_loader)
+                avg_val_auc = total_val_auc / len(self.validation_loader)
 
                 print(
                     f"Epoch [{epoch+1}/{max_epoches}], Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}, Val AUC: {avg_val_auc:.4f}"
