@@ -1,9 +1,11 @@
 import pandas as pd
-from sklearn.preprocessing import StandardScaler, OrdinalEncoder
+from sklearn.preprocessing import StandardScaler, OrdinalEncoder, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from .encoder import WorkYearEncoder, IssueDateEncoder, KmeansEncoder
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 class DatasetBasic:
@@ -71,7 +73,32 @@ class DatasetBasic:
 
         self.train_data = self.train_data_public
 
+    def show(self, feature):
+        plt.rcParams["font.sans-serif"] = ["SimHei"]
+        plt.rcParams["axes.unicode_minus"] = False
+        for col in feature:
+            data = self.train_data[self.train_data["isDefault"] == 0][col].sort_values()
+            plt.subplot(1, 2, 1)
+            sns.histplot(data, kde=False, bins=30, color="blue")
+            plt.xlabel(col)
+            plt.title("isDefault=0")
+
+            data = self.train_data[self.train_data["isDefault"] == 1][col].sort_values()
+            plt.subplot(1, 2, 2)
+            sns.histplot(data, kde=False, bins=30, color="blue")
+            plt.xlabel(col)
+            plt.title("isDefault=1")
+
+            plt.tight_layout()
+            plt.savefig(f"data/visualization/{col}.png")
+            plt.close()
+
     def preprocess(self):
+
+        self.show(self.numerical_feature)
+        self.show(self.categorical_feature)
+        self.show(self.other_feature)
+
         numeric_transformer = Pipeline(
             steps=[
                 ("imputer", SimpleImputer(strategy="mean")),
@@ -88,6 +115,7 @@ class DatasetBasic:
                         handle_unknown="use_encoded_value", unknown_value=-1
                     ),
                 ),
+                # ("onehot", OneHotEncoder(handle_unknown="ignore")),
             ]
         )
 

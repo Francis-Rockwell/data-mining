@@ -1,8 +1,7 @@
 import argparse
 import pandas as pd
 from data.pre_process import DatasetPro
-from models import xgboost, logistic_regression, neural_network, random_forest
-
+from models import logistic_regression, random_forest, lightgbm, xgboost, neural_network
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -11,7 +10,7 @@ if __name__ == "__main__":
         "--model_type",
         type=str,
         required=True,
-        choices=["LR", "XGB", "NN", "RF"],
+        choices=["LR", "XGB", "NN", "RF", "LGB"],
     )
     parser.add_argument("-I", "--internet", type=bool, default=False, required=False)
     args = parser.parse_args()
@@ -62,6 +61,14 @@ if __name__ == "__main__":
             validation_label=dataset.validation_label,
         )
         prefix = "random_forest"
+    elif args.model_type == "LGB":
+        model = lightgbm.LightGBM(
+            train_feature=dataset.train_feature,
+            train_label=dataset.train_label,
+            validation_feature=dataset.validation_feature,
+            validation_label=dataset.validation_label,
+        )
+        prefix = "lightgbm"
 
     model.train()
     print(f"{prefix} validation roc: {model.validate()}")
